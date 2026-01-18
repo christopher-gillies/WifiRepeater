@@ -21,9 +21,36 @@ Perfect for extending WiFi coverage to dead zones in your house without needing 
 - PlatformIO installed (VS Code extension or CLI)
 - Your home WiFi network credentials
 
-### Step 1: Configure WiFi Credentials
+### Getting the Code
 
-Edit `include/secret.h` with your home WiFi and repeater credentials:
+**Clone the repository:**
+```bash
+git clone <repository-url>
+cd WifiRepeater
+```
+
+**Or download as ZIP:**
+- Click "Code" → "Download ZIP" on GitHub
+- Extract the zip file
+
+### Step 1: Create & Configure WiFi Credentials
+
+**1a. Create secret.h from template:**
+
+The repository includes a template file to prevent accidentally committing credentials:
+
+```bash
+# Linux/macOS
+cp include/secret.h.template include/secret.h
+
+# Windows (PowerShell)
+Copy-Item include/secret.h.template include/secret.h
+
+# Windows (CMD)
+copy include\secret.h.template include\secret.h
+```
+
+**1b. Edit `include/secret.h` with your home WiFi and repeater credentials:**
 
 ```c
 // Upstream WiFi Network Credentials
@@ -35,7 +62,11 @@ Edit `include/secret.h` with your home WiFi and repeater credentials:
 #define AP_PASSWORD "repeater123"
 ```
 
-**Important:** The `secret.h` file is in `.gitignore` and will not be committed to version control. Keep your credentials safe!
+**Important Security Notes:**
+- The `secret.h` file is in `.gitignore` and will **never** be committed to version control
+- The template file (`secret.h.template`) is in the repo for reference
+- Your actual credentials in `secret.h` are safe - they will never be shared
+- Keep your credentials safe and don't share `secret.h`
 
 ### Step 2: Build
 
@@ -79,10 +110,11 @@ You should see:
 Before connecting your phone, verify these settings are correct:
 
 ### ✅ WiFi Credentials Set?
-- [ ] `include/secret.h` has your home WiFi SSID (STA_SSID)
-- [ ] `include/secret.h` has your home WiFi password (STA_PASSWORD)
-- [ ] `include/secret.h` has repeater SSID (AP_SSID) - "ESP32-Repeater"
-- [ ] `include/secret.h` has repeater password (AP_PASSWORD)
+- [ ] Created `include/secret.h` from `include/secret.h.template`
+- [ ] `include/secret.h` has your home WiFi SSID (STA_SSID) - not "YOUR_HOME_WIFI_SSID"
+- [ ] `include/secret.h` has your home WiFi password (STA_PASSWORD) - not a placeholder
+- [ ] `include/secret.h` has repeater SSID (AP_SSID) - "ESP32-Repeater" or custom name
+- [ ] `include/secret.h` has repeater password (AP_PASSWORD) - secure password
 
 ### ✅ Configuration Files Correct?
 - [ ] `sdkconfig.defaults` has `CONFIG_LWIP_IP_FORWARD=y` (CRITICAL for internet access)
@@ -334,12 +366,13 @@ Your phone will connect and have full internet access immediately.
 
 ```
 include/
-  ├── wifi_config.h         - Configuration constants
-  ├── wifi_manager.h        - WiFi management interface
-  ├── dhcp_server.h         - DHCP server interface
-  ├── dns_forwarding.h      - DNS forwarding interface
-  ├── ip_forward.h          - IP forwarding interface
-  └── secret.h              - WiFi credentials (in .gitignore)
+  ├── wifi_config.h              - Configuration constants
+  ├── wifi_manager.h             - WiFi management interface
+  ├── dhcp_server.h              - DHCP server interface
+  ├── dns_forwarding.h           - DNS forwarding interface
+  ├── ip_forward.h               - IP forwarding interface
+  ├── secret.h.template          - Template for credentials (in repo)
+  └── secret.h                   - YOUR WiFi credentials (in .gitignore - create from template)
 
 src/
   ├── main.c                - Entry point
@@ -352,8 +385,10 @@ CLAUDE.md                 - Technical documentation
 README.md                 - This file
 platformio.ini            - PlatformIO build configuration
 sdkconfig.defaults        - ESP-IDF SDK configuration
-.gitignore                - Ignore rules (includes secret.h)
+.gitignore                - Ignore rules (includes secret.h to prevent credential leaks)
 ```
+
+**Important:** `secret.h.template` is in the repository. You create your own `secret.h` locally by copying the template and editing it with your credentials. Your `secret.h` will never be committed to git.
 
 ## Tips for Best Performance
 
@@ -411,6 +446,21 @@ pio run -e freenove_esp32_s3_wroom
 This ensures the build system regenerates the configuration from your changes. The file will be automatically recreated during the next build.
 
 ## FAQ
+
+**Q: Why is `include/secret.h` not in the repository?**
+A: Security! The file is in `.gitignore` to prevent accidentally committing your WiFi credentials to git. You'll find `include/secret.h.template` in the repo to use as a starting point. Just copy it to `secret.h` and edit with your credentials.
+
+**Q: How do I create my `secret.h` file?**
+A: Copy the template:
+```bash
+cp include/secret.h.template include/secret.h  # Linux/Mac
+copy include\secret.h.template include\secret.h # Windows CMD
+Copy-Item include/secret.h.template include/secret.h # Windows PowerShell
+```
+Then edit the new `secret.h` file with your actual WiFi credentials.
+
+**Q: Will my WiFi credentials ever be committed to git?**
+A: No. The `secret.h` file is in `.gitignore`, so git will never track it. Only the template is in the repository.
 
 **Q: Can I use this with 5GHz WiFi?**
 A: The ESP32-S3 only supports 2.4 GHz. Your upstream router must broadcast 2.4 GHz band.
