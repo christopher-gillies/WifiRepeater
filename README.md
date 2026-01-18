@@ -501,6 +501,7 @@ A: The `.gitignore` file prevents committing sensitive files like `secret.h` to 
 - ESP-IDF Documentation: https://docs.espressif.com/projects/esp-idf/
 - lwIP Documentation: https://savannah.nongnu.org/projects/lwip/
 - PlatformIO Docs: https://docs.platformio.org/
+- Reference Implementation: [esp32_nat_router_extended](https://github.com/dchristl/esp32_nat_router_extended) - Used as reference for NAT implementation
 
 ## License
 
