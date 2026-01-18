@@ -1,0 +1,105 @@
+================================================================================
+ESP-IDF lwIP NAT/NAPT Function Research Summary
+================================================================================
+
+RESEARCH DATE: 2026-01-18
+KEY FINDING: Correct function to use is ip_napt_enable_netif()
+
+================================================================================
+ALL AVAILABLE NAT FUNCTIONS (from lwip/lwip_napt.h)
+================================================================================
+
+1. ENABLE/DISABLE NAPT (3 variants):
+
+   void ip_napt_enable(u32_t addr, int enable);
+   - By IP address (network byte order)
+
+   void ip_napt_enable_no(u8_t number, int enable);
+   - By interface number (0, 1, 2, etc.)
+
+   int ip_napt_enable_netif(struct netif *netif, int enable);
+   - By netif pointer (RECOMMENDED)
+   - Returns: 1=success, 0=failure
+
+2. PORT MAPPING (3 functions):
+
+   u8_t ip_portmap_add(u8_t proto, u32_t maddr, u16_t mport, 
+                       u32_t daddr, u16_t dport);
+   - Add port mapping rule
+
+   u8_t ip_portmap_get(u8_t proto, u16_t mport, u32_t *maddr, 
+                       u32_t *daddr, u16_t *dport);
+   - Retrieve port mapping
+
+   u8_t ip_portmap_remove(u8_t proto, u16_t mport);
+   - Remove port mapping
+
+3. STATISTICS (optional):
+
+   void ip_napt_get_stats(struct stats_ip_napt *stats);
+   - Get NAPT statistics (if LWIP_STATS enabled)
+
+================================================================================
+HEADER FILE
+================================================================================
+
+#include "lwip/lwip_napt.h"
+
+Location in PlatformIO:
+~/.platformio/.cache/tmp/pkg-installing-*/components/lwip/
+  lwip/src/include/lwip/lwip_napt.h
+
+================================================================================
+CONFIGURATION REQUIREMENTS (sdkconfig)
+================================================================================
+
+CRITICAL:
+CONFIG_LWIP_IP_FORWARD=y            # Must be enabled!
+CONFIG_LWIP_IPV4_NAPT=y             # NAPT engine
+CONFIG_LWIP_L2_TO_L3_COPY=y         # Packet translation
+
+OPTIONAL:
+CONFIG_LWIP_IPV4_NAPT_PORTMAP=y     # Port mapping
+CONFIG_LWIP_STATS=y                 # Statistics
+
+================================================================================
+KEY DEFAULTS
+================================================================================
+
+#define IP_NAPT_MAX              512   # Max sessions
+#define IP_PORTMAP_MAX           32    # Max port maps
+#define IP_NAPT_TIMEOUT_MS_TCP   1800000  # 30 minutes
+#define IP_NAPT_TIMEOUT_MS_UDP   2000     # 2 seconds
+#define NAPT_TMR_INTERVAL        2000     # Cleanup: 2 seconds
+
+Memory: ~20 KB for 512 sessions, ~0.4 KB for 32 mappings
+
+================================================================================
+CORRECT IMPLEMENTATION PATTERN
+================================================================================
+
+// Enable NAPT on AP interface
+struct netif *ap_netif = esp_netif_get_netif(ap_netif_handle);
+int result = ip_napt_enable_netif(ap_netif, 1);
+
+if (result) {
+    printf("NAPT enabled\n");
+} else {
+    printf("NAPT failed\n");
+}
+
+// Disable NAPT
+result = ip_napt_enable_netif(ap_netif, 0);
+
+================================================================================
+IMPORTANT NOTES
+================================================================================
+
+- IP_FORWARD MUST be enabled for NAPT to work
+- NAPT is automatic after enabling - transparent to app
+- Sessions auto-cleanup every 2 seconds
+- Max 512 concurrent sessions
+- Thread-safe
+- No manual packet handling needed
+
+================================================================================

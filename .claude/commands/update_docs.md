@@ -1,0 +1,1 @@
+Update CLAUDE.md and README.md to match the new code.

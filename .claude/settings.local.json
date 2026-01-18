@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pio:*)",
+      "Bash(dir /s \"C:\\\\Users\\\\chris\\\\OneDrive\\\\Documents\\\\PlatformIO\\\\Projects\\\\WifiRepeater\" /b)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(__NEW_LINE_a39c883565988dfe__ head -100 \"/c/Users/chris/OneDrive/Documents/PlatformIO/Projects/WifiRepeater/lwip_napt_header_complete.h\")",
+      "Bash(__NEW_LINE_9280aa904f704625__ printf '=============================================================================\\\\nQUICKSTART: Using NAPT in WiFi Repeater Project\\\\n=============================================================================\\\\n\\\\nGOAL: Enable NAT on the WiFi repeater so AP clients can access upstream networks\\\\n\\\\n=============================================================================\\\\nSTEP 1: Verify sdkconfig Prerequisites\\\\n=============================================================================\\\\n\\\\nEnsure your sdkconfig has:\\\\n- CONFIG_LWIP_IP_FORWARD=y           \\(CRITICAL: enables packet forwarding\\)\\\\n- CONFIG_LWIP_IPV4_NAPT=y            \\(enables NAPT/NAT\\)\\\\n- CONFIG_LWIP_IPV4_NAPT_PORTMAP=y    \\(optional: port forwarding\\)\\\\n- CONFIG_LWIP_L2_TO_L3_COPY=y        \\(recommended for NAT\\)\\\\n\\\\n=============================================================================\\\\nSTEP 2: Include the Header\\\\n=============================================================================\\\\n\\\\nIn your C code file:\\\\n\\\\n    #include \"\"lwip/lwip_napt.h\"\"\\\\n\\\\nThis gives you access to:\\\\n- ip_napt_enable_netif\\(\\)       ← THE FUNCTION TO USE\\\\n- ip_portmap_add\\(\\)             \\(optional: port forwarding\\)\\\\n- ip_portmap_remove\\(\\)          \\(optional: port forwarding\\)\\\\n\\\\n=============================================================================\\\\nSTEP 3: Call at the Right Time\\\\n=============================================================================\\\\n\\\\nEnable NAPT AFTER:\\\\n1. STA connects to upstream WiFi \\(after IP_EVENT_STA_GOT_IP\\)\\\\n2. AP interface is fully initialized\\\\n3. DHCP server is running\\\\n\\\\nThe BEST place: In IP_EVENT_STA_GOT_IP event handler\\\\n\\\\n=============================================================================\\\\nTHE ONE FUNCTION YOU NEED\\\\n=============================================================================\\\\n\\\\nFunction: ip_napt_enable_netif\\(struct netif *netif, int enable\\)\\\\n\\\\nPurpose: Enable NAT on the AP interface\\\\n\\\\nSignature:\\\\n    int ip_napt_enable_netif\\(struct netif *netif, int enable\\);\\\\n\\\\nParameters:\\\\n- struct netif *netif : The AP network interface \\(cast from esp_netif_t\\)\\\\n- int enable : 1 to enable, 0 to disable\\\\n\\\\nReturns:\\\\n- 1 : Success\\\\n- 0 : Failed \\(interface not up or error\\)\\\\n\\\\nUsage:\\\\n    if \\(ip_napt_enable_netif\\(\\(struct netif *\\)netif_ap, 1\\) == 1\\) {\\\\n        printf\\(\"\"NAT enabled\\\\\\\\n\"\"\\);\\\\n    } else {\\\\n        printf\\(\"\"NAT enable failed\\\\\\\\n\"\"\\);\\\\n    }\\\\n\\\\n=============================================================================\\\\nFILES CREATED\\\\n=============================================================================\\\\n\\\\n1. lwip_napt_header_complete.h\\\\n   - Full lwip_napt.h from ESP-IDF for reference\\\\n\\\\n2. NAPT_FUNCTIONS.txt\\\\n   - Quick reference of function signatures\\\\n\\\\n3. NAPT_REFERENCE.txt\\\\n   - Overview and key insights\\\\n\\\\n4. NAPT_FUNCTION_COMPARISON.txt\\\\n   - Detailed comparison of all three enable functions\\\\n\\\\n5. NAPT_SEARCH_RESULTS.txt\\\\n   - Complete analysis of available functions\\\\n\\\\n6. QUICKSTART_NAPT.txt\\\\n   - This file \\(practical quickstart guide\\)\\\\n\\\\n=============================================================================\\\\nSUMMARY\\\\n=============================================================================\\\\n\\\\nTL;DR:\\\\n\\\\n1. Ensure CONFIG_LWIP_IP_FORWARD=y and CONFIG_LWIP_IPV4_NAPT=y\\\\n\\\\n2. #include \"\"lwip/lwip_napt.h\"\"\\\\n\\\\n3. After STA connects, call:\\\\n   int result = ip_napt_enable_netif\\(\\(struct netif *\\)netif_ap, 1\\);\\\\n   if \\(result == 1\\) printf\\(\"\"NAT enabled\\\\\\\\n\"\"\\);\\\\n\\\\n4. Done! AP clients can now access upstream networks\\\\n\\\\nThe NAT automatically:\\\\n- Translates AP client traffic\\\\n- Reverse-translates responses\\\\n- Manages 512 concurrent sessions\\\\n- Cleans up idle sessions\\\\n\\\\nNO additional configuration needed beyond those 3 steps!\\\\n\\\\n===================================================================================')",
+      "Bash(__NEW_LINE_9280aa904f704625__ cat \"/c/Users/chris/OneDrive/Documents/PlatformIO/Projects/WifiRepeater/QUICKSTART_NAPT.txt\")",
+      "Bash(__NEW_LINE_48e2a1066e1e922d__ printf \"NAPT DOCUMENTATION INDEX\\\\n\\\\nAll available functions found in lwip_napt.h:\\\\n\\\\n\")",
+      "Bash(__NEW_LINE_48e2a1066e1e922d__ printf \"ENABLE FUNCTIONS \\(3 total\\):\\\\n\")",
+      "Bash(printf:*)",
+      "Bash(__NEW_LINE_48e2a1066e1e922d__ printf \"PORT MAPPING FUNCTIONS \\(3 total\\):\\\\n\")",
+      "Bash(__NEW_LINE_48e2a1066e1e922d__ printf \"STATISTICS FUNCTION:\\\\n\")",
+      "Bash(__NEW_LINE_48e2a1066e1e922d__ printf \"RECOMMENDED USAGE:\\\\n\\\\n\")",
+      "Bash(__NEW_LINE_48e2a1066e1e922d__ printf \"See documentation files for detailed information.\\\\n\")",
+      "Bash(__NEW_LINE_48e2a1066e1e922d__ cat \"/c/Users/chris/OneDrive/Documents/PlatformIO/Projects/WifiRepeater/README_NAPT.txt\")",
+      "Bash(cd \"/c/Users/chris/OneDrive/Documents/PlatformIO/Projects/WifiRepeater\" echo \"DOCUMENTATION FILES CREATED:\" echo \"\" ls -1 *.txt *.h)",
+      "Bash(__NEW_LINE_4b876a73326fb103__ echo \"==============================================================================\")",
+      "Bash(echo:*)",
+      "Skill(update_docs)",
+      "Bash(taskkill:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
