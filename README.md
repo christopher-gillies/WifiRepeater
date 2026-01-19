@@ -105,6 +105,17 @@ You should see:
    - Websites will load normally
    - You can access both local network and internet
 
+## Hardware Photos
+
+The Freenove ESP32-S3 WROOM-1 board running the WiFi repeater firmware:
+
+<div align="center">
+  <img src="assets/IMG_20260118_185421600_resized.jpg" alt="ESP32-S3 WiFi Repeater - Front View" width="400">
+  <img src="assets/IMG_20260118_185440040_resized.jpg" alt="ESP32-S3 WiFi Repeater - Side View" width="400">
+</div>
+
+The board in action with the custom 3D-printed blue case and Freenove development module.
+
 ## Setup Verification Checklist
 
 Before connecting your phone, verify these settings are correct:
